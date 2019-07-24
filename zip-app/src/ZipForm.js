@@ -15,12 +15,13 @@ class ZipForm extends Component{
 	}
 
 	handleInputChange(event){
-		this.setState({searchZip: event.target.value})
+		this.setState({searchZip: event.target.value});
+		this.setState({fullZipLink: this.state.apiLink + event.target.value});
 	}
 
 	handleSubmit(event){
-		this.setState({fullZipLink: this.state.apiLink + this.state.searchZip});
 		event.preventDefault();
+		console.log(this.state.fullZipLink);
 	}
 
 

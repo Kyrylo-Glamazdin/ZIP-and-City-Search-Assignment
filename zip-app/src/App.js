@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Nav from "./Nav.js"
+import ZipForm from './ZipForm.js'
 import './App.css';
 
 class App extends Component {
@@ -8,6 +9,7 @@ class App extends Component {
 	  <div className="App Container">
 	    <Nav>
 		</Nav>
+		<ZipForm searchZip="10016" />
 	  </div>
     );
   }

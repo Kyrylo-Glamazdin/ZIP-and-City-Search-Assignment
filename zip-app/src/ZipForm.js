@@ -1,0 +1,45 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import './ZipForm.css'
+
+class ZipForm extends Component{
+	constructor(props){
+		super(props);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.state = {
+			searchZip: props.searchZip
+		};
+	}
+
+	handleInputChange(event){
+		this.setState({searchZip: event.target.value})
+	}
+
+	handleSubmit(event){
+		console.log(this.state.searchZip);
+		event.preventDefault();
+	}
+
+
+	render(){
+		return(
+				<div className="ZipSearchForm">
+					<form onSubmit={this.handleSubmit}>
+						<label>
+							Zip Code:
+							<input type="text" name="zipCodeInput"
+							value={this.state.searchZip} onChange={this.handleInputChange} />
+						</label>
+						<input type="submit" value="Search" />
+					</form>
+				</div>
+			)
+	}
+};
+
+ZipForm.propTypes = {
+	searchZip: PropTypes.string
+};
+
+export default ZipForm

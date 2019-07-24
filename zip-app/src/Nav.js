@@ -11,8 +11,8 @@ class Nav extends React.Component {
 
 	render() {
 		return(
-		  <div className="Nav">
-		    Zipcode Search
+		  <div className="nav">
+		    <div className="title">Zipcode Search</div>
 		  </div>
 		);
 	}

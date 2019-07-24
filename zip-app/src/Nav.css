@@ -1,0 +1,11 @@
+.nav {
+	background: linear-gradient(#1f214a, #404494);
+	height: 40px;
+}
+
+.title {
+	padding: 5px;
+	text-align: center;
+	color: #759bd9;
+	font-size: 18pt;
+}

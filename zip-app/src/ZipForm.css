@@ -1,0 +1,23 @@
+form {
+	margin-top: 10px;
+}
+
+label {
+	font-family: "Arial", Helvetica, sans-serif;
+	font-size: 30px;
+	margin-right: 5px;
+}
+
+input{
+	height: 33px;
+	font-family: "Arial", Helvetica, sans-serif;
+	font-size: 20px;
+}
+
+
+input[type=submit]{
+	width: 100px;
+	height: 40px;
+	background-color: black;
+	color: white;
+}

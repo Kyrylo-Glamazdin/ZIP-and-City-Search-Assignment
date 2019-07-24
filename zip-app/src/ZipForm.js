@@ -8,7 +8,9 @@ class ZipForm extends Component{
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.state = {
-			searchZip: props.searchZip
+			searchZip: props.searchZip,
+			apiLink: "http://ctp-zip-api.herokuapp.com/zip/",
+			fullZipLink: "http://ctp-zip-api.herokuapp.com/zip/" + props.searchZip
 		};
 	}
 
@@ -17,7 +19,7 @@ class ZipForm extends Component{
 	}
 
 	handleSubmit(event){
-		console.log(this.state.searchZip);
+		this.setState({fullZipLink: this.state.apiLink + this.state.searchZip});
 		event.preventDefault();
 	}
 

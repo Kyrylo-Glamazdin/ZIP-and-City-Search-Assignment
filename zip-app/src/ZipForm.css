@@ -5,13 +5,14 @@ form {
 label {
 	font-family: "Arial", Helvetica, sans-serif;
 	font-size: 30px;
-	margin-right: 5px;
 }
 
 input{
 	height: 33px;
 	font-family: "Arial", Helvetica, sans-serif;
 	font-size: 20px;
+	margin-left: 5px;
+	border-color: black;
 }
 
 
@@ -20,4 +21,8 @@ input[type=submit]{
 	height: 40px;
 	background-color: black;
 	color: white;
+}
+
+input[type=text]{
+	padding-left: 10px;
 }

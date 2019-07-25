@@ -42,27 +42,26 @@ class ZipForm extends Component{
         });
     }
 
-
 	render(){
 		return(
-				<div className="ZipSearchForm">
-					<form onSubmit={this.handleSubmit}>
-						<label>
-							Zip Code:
-							<input type="text" name="zipCodeInput"
-							value={this.state.searchZip} onChange={this.handleInputChange} />
-						</label>
-						<input type="submit" value="Search" />
-					</form>
+			<div className="ZipSearchForm">
+				<form onSubmit={this.handleSubmit}>
+					<label>
+						Zip Code:
+						<input type="text" name="zipCodeInput"
+						value={this.state.searchZip} onChange={this.handleInputChange} />
+					</label>
+					<input type="submit" value="Search" />
+				</form>
                
-               <div>
-               {this.state.items.map(item => (
-                                   <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
-                                   zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />
-                          ))}
-               </div>
+				<div className="elements-container">
+					{this.state.items.map(item => (
+						<Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
+						zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />
+					))}
 				</div>
-               );
+			</div>
+            );
 	}
 };
 

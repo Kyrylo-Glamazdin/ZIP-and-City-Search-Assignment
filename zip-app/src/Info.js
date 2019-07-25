@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import "./App.css"
+import "./Info.css"
 
 class Info extends React.Component {
 	constructor(props){
@@ -23,16 +24,15 @@ class Info extends React.Component {
 	}
 
 	render() {
-
-		return <div>
+		return <div className="info-element">
 			<div className="zipHeader">
 				{this.state.zipCity}
 			</div>
 			<div className="zipFullInfo">
-				State: {this.state.zipState} <br />
-				Location: {this.state.zipLoc} <br />
-				Population: {this.state.zipPopulation} <br />
-				Wages: {this.state.zipWages} <br />
+				<div className="info-text"> State: {this.state.zipState} </div>
+				<div className="info-text"> Location: {this.state.zipLoc} </div>
+				<div className="info-text"> Population: {this.state.zipPopulation} </div>
+				<div className="info-text"> Wages: {this.state.zipWages} </div>
 			</div>
 		</div>
 	}

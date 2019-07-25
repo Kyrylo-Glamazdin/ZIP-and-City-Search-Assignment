@@ -19,7 +19,7 @@ class Info extends React.Component {
 
 	componentDidMount(){
 		this.setState({
-			zipLoc: this.state.zipLat + " " + this.state.zipLon
+			zipLoc: this.state.zipLat + ", " + this.state.zipLon
 		})
 	}
 

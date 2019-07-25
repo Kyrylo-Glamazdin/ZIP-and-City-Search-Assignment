@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Info from './Info.js'
 import "./CityForm.css";
 
 class CityForm extends Component{
@@ -50,7 +51,7 @@ class CityForm extends Component{
 				<input type="submit" value="Search" />
 			</form>
 
-			<h1>All zip codes from zipList would be printed here</h1>
+			<Info zips={["11432", "90210", "11354", "11432", "90210", "11354"]}/>
 		</div>
 	}
 };

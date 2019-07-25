@@ -32,6 +32,7 @@ class ZipForm extends Component{
 	}
     
     retrieveData(){
+    	const that = this;
         fetch(this.state.fullZipLink)
         .then(res => res.json())
         .then(json => {
@@ -39,7 +40,12 @@ class ZipForm extends Component{
                     isLoaded: true,
                     items: json
               })
-        });
+        })
+        .catch(function() {
+        	that.setState({
+        		items: []
+        	})
+        })
     }
 
 
@@ -54,7 +60,7 @@ class ZipForm extends Component{
 						</label>
 						<input type="submit" value="Search" />
 					</form>
-               
+            		{this.state.items.length == 0 ? <p>Not Found</p> : <span></span>}
                <div>
                {this.state.items.map(item => (
                                    <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}

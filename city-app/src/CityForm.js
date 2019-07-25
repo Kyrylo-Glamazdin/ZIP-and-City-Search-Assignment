@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import Info from './Info.js'
-=======
-import ZipInfo from './ZipInfo.js'
->>>>>>> bc9790ef22376506904c2fadf86702c13db41d37
 import "./CityForm.css";
 
 class CityForm extends Component{
@@ -33,16 +29,12 @@ class CityForm extends Component{
 
 	//returns the list of zipcodes associated with the name of this city
 	retrieveCityData(){
-		let zipArray = [];
 		fetch(this.state.fullCityLink)
        .then(res => res.json())
        .then(json => {
            for (let i = 0; i < json.length; i++) {
-               zipArray.push(json[i]);
+               this.state.zipList.push(json[i]);
            }
-           this.setState({
-           	zipList: zipArray
-           })
        })
        .catch(err => {
            console.log("Error: Could not find city!")
@@ -50,8 +42,7 @@ class CityForm extends Component{
 	}
 
 	render(){
-		return (
-			<div className="CitySearchForm">
+		return <div className="CitySearchForm">
 			<form onSubmit={this.handleSubmit}>
 				<label>
 					City:
@@ -60,17 +51,8 @@ class CityForm extends Component{
 				<input type="submit" value="Search" />
 			</form>
 
-<<<<<<< HEAD
 			<Info zips={["11432", "90210", "11354", "11432", "90210", "11354"]}/>
-=======
-			<div className="ZipcodeSection">
-				{this.state.zipList.map(item => (
-				<ZipInfo key={item} zipCode={item} />
-				))}
-			</div>
->>>>>>> bc9790ef22376506904c2fadf86702c13db41d37
 		</div>
-		);
 	}
 };
 
@@ -82,7 +64,7 @@ export default CityForm
 
 
 
-//takes CITY returns ZIPS
+// //takes CITY returns ZIPS
 // let getCityInfo = city => {
 //    let url = http://ctp-zip-api.herokuapp.com/city/ + city.toUpperCase()
 //    let zip_list = []

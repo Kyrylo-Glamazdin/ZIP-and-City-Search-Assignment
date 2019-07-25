@@ -61,7 +61,7 @@ class ZipForm extends Component{
 						<input type="submit" value="Search" />
 					</form>
             		{this.state.items.length == 0 ? <p>Not Found</p> : <span></span>}
-               <div>
+               <div className="elements-container">
                {this.state.items.map(item => (
                                    <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
                                    zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />

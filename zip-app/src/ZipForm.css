@@ -28,5 +28,6 @@ input[type=text]{
 }
 
 .elements-container {
-	padding: 10px 20px;
+	padding: 15px 25%;
+	text-align: left;
 }

@@ -32,6 +32,7 @@ class ZipForm extends Component{
 	}
     
     retrieveData(){
+    	const that = this;
         fetch(this.state.fullZipLink)
         .then(res => res.json())
         .then(json => {
@@ -39,29 +40,35 @@ class ZipForm extends Component{
                     isLoaded: true,
                     items: json
               })
-        });
+        })
+        .catch(function() {
+        	that.setState({
+        		items: []
+        	})
+        })
     }
+
 
 	render(){
 		return(
-			<div className="ZipSearchForm">
-				<form onSubmit={this.handleSubmit}>
-					<label>
-						Zip Code:
-						<input type="text" name="zipCodeInput"
-						value={this.state.searchZip} onChange={this.handleInputChange} />
-					</label>
-					<input type="submit" value="Search" />
-				</form>
-               
-				<div className="elements-container">
-					{this.state.items.map(item => (
-						<Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
-						zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />
-					))}
+				<div className="ZipSearchForm">
+					<form onSubmit={this.handleSubmit}>
+						<label>
+							Zip Code:
+							<input type="text" name="zipCodeInput"
+							value={this.state.searchZip} onChange={this.handleInputChange} />
+						</label>
+						<input type="submit" value="Search" />
+					</form>
+            		{this.state.items.length == 0 ? <p>Not Found</p> : <span></span>}
+               <div>
+               {this.state.items.map(item => (
+                                   <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
+                                   zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />
+                          ))}
+               </div>
 				</div>
-			</div>
-            );
+               );
 	}
 };
 

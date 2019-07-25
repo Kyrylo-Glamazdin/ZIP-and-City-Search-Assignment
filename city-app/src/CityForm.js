@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ZipInfo from './ZipInfo.js'
+import "./CityForm.css";
 
 class CityForm extends Component{
 	constructor(){

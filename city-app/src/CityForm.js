@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ZipInfo from './ZipInfo.js'
 
 class CityForm extends Component{
 	constructor(){
@@ -27,12 +28,16 @@ class CityForm extends Component{
 
 	//returns the list of zipcodes associated with the name of this city
 	retrieveCityData(){
+		let zipArray = [];
 		fetch(this.state.fullCityLink)
        .then(res => res.json())
        .then(json => {
            for (let i = 0; i < json.length; i++) {
-               this.state.zipList.push(json[i]);
+               zipArray.push(json[i]);
            }
+           this.setState({
+           	zipList: zipArray
+           })
        })
        .catch(err => {
            console.log("Error: Could not find city!")
@@ -40,7 +45,8 @@ class CityForm extends Component{
 	}
 
 	render(){
-		return <div className="CitySearchForm">
+		return (
+			<div className="CitySearchForm">
 			<form onSubmit={this.handleSubmit}>
 				<label>
 					City:
@@ -49,8 +55,13 @@ class CityForm extends Component{
 				<input type="submit" value="Search" />
 			</form>
 
-			<h1>All zip codes from zipList would be printed here</h1>
+			<div className="ZipcodeSection">
+				{this.state.zipList.map(item => (
+				<ZipInfo key={item} zipCode={item} />
+				))}
+			</div>
 		</div>
+		);
 	}
 };
 
@@ -62,7 +73,7 @@ export default CityForm
 
 
 
-// //takes CITY returns ZIPS
+//takes CITY returns ZIPS
 // let getCityInfo = city => {
 //    let url = http://ctp-zip-api.herokuapp.com/city/ + city.toUpperCase()
 //    let zip_list = []

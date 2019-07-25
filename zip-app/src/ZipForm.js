@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Info from './Info.js'
 import './ZipForm.css'
 
 class ZipForm extends Component{
@@ -7,10 +8,13 @@ class ZipForm extends Component{
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
+        this.retrieveData = this.retrieveData.bind(this);
 		this.state = {
 			searchZip: props.searchZip,
 			apiLink: "http://ctp-zip-api.herokuapp.com/zip/",
-			fullZipLink: "http://ctp-zip-api.herokuapp.com/zip/" + props.searchZip
+			fullZipLink: "http://ctp-zip-api.herokuapp.com/zip/" + props.searchZip,
+            items: [],
+            isLoaded: false
 		};
 	}
 
@@ -18,11 +22,25 @@ class ZipForm extends Component{
 		this.setState({searchZip: event.target.value});
 		this.setState({fullZipLink: this.state.apiLink + event.target.value});
 	}
+    
+    
 
 	handleSubmit(event){
 		event.preventDefault();
 		console.log(this.state.fullZipLink);
+        this.retrieveData();
 	}
+    
+    retrieveData(){
+        fetch(this.state.fullZipLink)
+        .then(res => res.json())
+        .then(json => {
+              this.setState({
+                    isLoaded: true,
+                    items: json
+              })
+        });
+    }
 
 
 	render(){
@@ -36,8 +54,15 @@ class ZipForm extends Component{
 						</label>
 						<input type="submit" value="Search" />
 					</form>
+               
+               <div>
+               {this.state.items.map(item => (
+                                   <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}
+                                   zipPopulation={item.EstimatedPopulation} zipWages={item.TotalWages} />
+                          ))}
+               </div>
 				</div>
-			)
+               );
 	}
 };
 

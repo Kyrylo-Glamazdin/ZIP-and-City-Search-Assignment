@@ -8,11 +8,14 @@ class CityForm extends Component{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.retrieveCityData = this.retrieveCityData.bind(this);
+        this.retrieveStateData = this.retrieveStateData.bind(this);
+        this.getZipStateData = this.getZipStateData.bind(this);
         this.state = {
         city: "",
         apiLink: "http://ctp-zip-api.herokuapp.com/city/",
         fullCityLink: "http://ctp-zip-api.herokuapp.com/city/",
         zipList: [],
+        stateList: [],
         cityFound: true
         };
     }
@@ -26,6 +29,8 @@ class CityForm extends Component{
         event.preventDefault();
         console.log(this.state.fullCityLink);
         this.retrieveCityData();
+        this.retrieveStateData();
+        console.log(this.state.stateList)
     }
     
     //returns the list of zipcodes associated with the name of this city
@@ -46,9 +51,38 @@ class CityForm extends Component{
         .catch(err => {
                that.setState({
                     zipList: [],
+                    stateList: [],
                     cityFound: false
                })
                })
+    }
+    
+    retrieveStateData(){
+        let stateArray = [];
+        for (let index = 0; index < this.state.zipList.length; index++){
+            let newState = this.getZipStateData(this.state.zipList[index]);
+            stateArray.push(newState);
+        }
+        this.setState({
+            stateList: stateArray
+        })
+    }
+    
+    getZipStateData(zip){
+        let zipLink = "http://ctp-zip-api.herokuapp.com/zip/" + zip;
+        let stateName = "";
+        let resArray = [];
+        fetch(zipLink)
+        .then(res => res.json())
+        .then(json => {
+              for (let i = 0; i < json.length; i++) {
+              resArray.push(json[i]);
+              }
+              if (resArray.length > 0){
+              let stateName = resArray[0].State;
+              return stateName;
+              }
+              });
     }
     
     render(){

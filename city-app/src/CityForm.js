@@ -1,59 +1,73 @@
 import React, { Component } from 'react';
-import Info from './Info.js'
+import ZipInfo from './ZipInfo.js'
 import "./CityForm.css";
 
 class CityForm extends Component{
-	constructor(){
-		super();
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.retrieveCityData = this.retrieveCityData.bind(this);
-		this.state = {
-			city: "",
-			apiLink: "http://ctp-zip-api.herokuapp.com/city/",
-			fullCityLink: "http://ctp-zip-api.herokuapp.com/city/",
-			zipList: []
-		};
-	}
-
-	handleInputChange(event){
-		this.setState({city: event.target.value.toUpperCase()});
-		this.setState({fullCityLink: this.state.apiLink + event.target.value.toUpperCase()});
-	}
-
-	handleSubmit(event){
-		event.preventDefault();
-		console.log(this.state.fullCityLink);
-		this.retrieveCityData();
-	}
-
-	//returns the list of zipcodes associated with the name of this city
-	retrieveCityData(){
-		fetch(this.state.fullCityLink)
-       .then(res => res.json())
-       .then(json => {
-           for (let i = 0; i < json.length; i++) {
-               this.state.zipList.push(json[i]);
-           }
-       })
-       .catch(err => {
-           console.log("Error: Could not find city!")
-       })
-	}
-
-	render(){
-		return <div className="CitySearchForm">
-			<form onSubmit={this.handleSubmit}>
-				<label>
-					City:
-					<input type="text" name="cityInput" onChange={this.handleInputChange} />
-				</label>
-				<input type="submit" value="Search" />
-			</form>
-
-			<Info zips={["11432", "90210", "11354", "11432", "90210", "11354"]}/>
-		</div>
-	}
+    constructor(){
+        super();
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.retrieveCityData = this.retrieveCityData.bind(this);
+        this.state = {
+        city: "",
+        apiLink: "http://ctp-zip-api.herokuapp.com/city/",
+        fullCityLink: "http://ctp-zip-api.herokuapp.com/city/",
+        zipList: [],
+        cityFound: true
+        };
+    }
+    
+    handleInputChange(event){
+        this.setState({city: event.target.value.toUpperCase()});
+        this.setState({fullCityLink: this.state.apiLink + event.target.value.toUpperCase()});
+    }
+    
+    handleSubmit(event){
+        event.preventDefault();
+        console.log(this.state.fullCityLink);
+        this.retrieveCityData();
+    }
+    
+    //returns the list of zipcodes associated with the name of this city
+    retrieveCityData(){
+        const that = this;
+        let zipArray = [];
+        fetch(this.state.fullCityLink)
+        .then(res => res.json())
+        .then(json => {
+              for (let i = 0; i < json.length; i++) {
+              zipArray.push(json[i]);
+              }
+              this.setState({
+                            zipList: zipArray,
+                            cityFound: true
+                            })
+              })
+        .catch(err => {
+               that.setState({
+                    zipList: [],
+                    cityFound: false
+               })
+               })
+    }
+    
+    render(){
+        return (
+                <div className="CitySearchForm">
+                <form onSubmit={this.handleSubmit}>
+                <label>
+                City:
+                <input type="text" name="cityInput" onChange={this.handleInputChange} />
+                </label>
+                <input type="submit" value="Search" />
+                </form>
+                {this.state.cityFound === false ? <p>City not Found</p> : <span></span>}
+                <div className="ZipcodeSection">
+                <ZipInfo zips={this.state.zipList} />
+                </div>
+                </div>
+                );
+    }
 };
 
 export default CityForm
@@ -64,7 +78,7 @@ export default CityForm
 
 
 
-// //takes CITY returns ZIPS
+//takes CITY returns ZIPS
 // let getCityInfo = city => {
 //    let url = http://ctp-zip-api.herokuapp.com/city/ + city.toUpperCase()
 //    let zip_list = []

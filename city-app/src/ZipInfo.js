@@ -6,19 +6,23 @@ class ZipInfo extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			zipCode: props.zipCode
+			zipCodes: props.zips
 		}
 	}
 	
 	render(){
-		return <div>
-			{this.state.zipCode}
+		return <div className="info-container">
+			{this.props.zips.map( zip => (
+                        <div key={zip} className="info-element">
+                    {zip}
+                </div>
+                ))}
 		</div>
 	}
 };
 
 ZipInfo.propTypes = {
-	zipCode: PropTypes.string
+	zipCodes: PropTypes.array
 };
 
 export default ZipInfo

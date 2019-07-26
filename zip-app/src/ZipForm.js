@@ -14,7 +14,7 @@ class ZipForm extends Component{
 			apiLink: "http://ctp-zip-api.herokuapp.com/zip/",
 			fullZipLink: "http://ctp-zip-api.herokuapp.com/zip/" + props.searchZip,
             items: [],
-            isLoaded: false
+            isLoaded: true
 		};
 	}
 
@@ -43,7 +43,8 @@ class ZipForm extends Component{
         })
         .catch(function() {
         	that.setState({
-        		items: []
+        		items: [],
+                isLoaded: false
         	})
         })
     }
@@ -60,7 +61,7 @@ class ZipForm extends Component{
 						</label>
 						<input type="submit" value="Search" />
 					</form>
-            		{this.state.items.length == 0 ? <p>Not Found</p> : <span></span>}
+            		{this.state.isLoaded === false ? <p>Not Found</p> : <span></span>}
                <div className="elements-container">
                {this.state.items.map(item => (
                                    <Info key={item.RecordNumber} zipCity={item.City} zipState={item.State} zipLat={item.Lat} zipLon={item.Long}

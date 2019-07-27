@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ZipInfo from './ZipInfo.js'
+import ZipInfo from './ZipInfo.js';
+import StateInfo from './StateInfo.js';
 import "./CityForm.css";
 
 class CityForm extends Component{
@@ -8,14 +9,13 @@ class CityForm extends Component{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.retrieveCityData = this.retrieveCityData.bind(this);
-        this.retrieveStateData = this.retrieveStateData.bind(this);
-        this.getZipStateData = this.getZipStateData.bind(this);
+        this.existsInStatesList = this.existsInStatesList.bind(this);
         this.state = {
         city: "",
         apiLink: "http://ctp-zip-api.herokuapp.com/city/",
         fullCityLink: "http://ctp-zip-api.herokuapp.com/city/",
         zipList: [],
-        stateList: [],
+        statesList: [],
         cityFound: true
         };
     }
@@ -29,13 +29,15 @@ class CityForm extends Component{
         event.preventDefault();
         console.log(this.state.fullCityLink);
         this.retrieveCityData();
-        this.retrieveStateData();
-        console.log(this.state.stateList)
+        console.log(this.state.statesList)
     }
     
     //returns the list of zipcodes associated with the name of this city
     retrieveCityData(){
         const that = this;
+        this.setState({
+                statesList: []
+        })
         let zipArray = [];
         fetch(this.state.fullCityLink)
         .then(res => res.json())
@@ -48,57 +50,60 @@ class CityForm extends Component{
                             cityFound: true
                             })
               })
+        .then( () => {
+              for (let i = 0; i < that.state.zipList.length; i++){
+              let urlZip = "http://ctp-zip-api.herokuapp.com/zip/" + that.state.zipList[i];
+              fetch(urlZip)
+              .then(res => res.json())
+              .then(json => {
+                    for (let j = 0; j < json.length; j++){
+                    if (!that.existsInStatesList(json[j].State)){
+                    let statesList_ = that.state.statesList;
+                    statesList_[statesList_.length] = json[j].State;
+                    that.setState({
+                                  statesList: statesList_
+                    })
+                    }
+                    }
+                    })
+              }
+              })
         .catch(err => {
+               console.log(err);
                that.setState({
                     zipList: [],
-                    stateList: [],
+                    statesList: [],
                     cityFound: false
                })
                })
     }
     
-    retrieveStateData(){
-        let stateArray = [];
-        for (let index = 0; index < this.state.zipList.length; index++){
-            let newState = this.getZipStateData(this.state.zipList[index]);
-            stateArray.push(newState);
-        }
-        this.setState({
-            stateList: stateArray
-        })
+    existsInStatesList(stateName) {
+        for (let i = 0; i < this.state.statesList.length; i++) {
+            if (this.state.statesList[i] === stateName)
+                return true
+                }
+        return false
     }
     
-    getZipStateData(zip){
-        let zipLink = "http://ctp-zip-api.herokuapp.com/zip/" + zip;
-        let stateName = "";
-        let resArray = [];
-        fetch(zipLink)
-        .then(res => res.json())
-        .then(json => {
-              for (let i = 0; i < json.length; i++) {
-              resArray.push(json[i]);
-              }
-              if (resArray.length > 0){
-              let stateName = resArray[0].State;
-              return stateName;
-              }
-              });
-    }
     
     render(){
         return (
                 <div className="CitySearchForm">
-                <form onSubmit={this.handleSubmit}>
-                <label>
-                City:
-                <input type="text" name="cityInput" onChange={this.handleInputChange} />
-                </label>
-                <input type="submit" value="Search" />
-                </form>
-                {this.state.cityFound === false ? <p>City not Found</p> : <span></span>}
-                <div className="ZipcodeSection">
-                <ZipInfo zips={this.state.zipList} />
-                </div>
+                    <form onSubmit={this.handleSubmit}>
+                    <label>
+                        City:
+                        <input type="text" name="cityInput" onChange={this.handleInputChange} />
+                    </label>
+                    <input type="submit" value="Search" />
+                    </form>
+                    {this.state.cityFound === false ? <p>City not Found</p> : <span></span>}
+                    <div className="ZipcodeSection">
+                        <ZipInfo zips={this.state.zipList} />
+                    </div>
+                    <div className="StateSection">
+                        <StateInfo stateNames={this.state.statesList} />
+                    </div>
                 </div>
                 );
     }
